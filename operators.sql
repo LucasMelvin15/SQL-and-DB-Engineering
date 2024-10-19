@@ -62,3 +62,18 @@ where (orderdate >= '2004-06-01' AND orderdate <= '2004-06-30')
 AND totalamount > 100
 
 -- RESULT : 205226.06
+
+
+
+-- Who between the ages of 30 and 50 has an income less than 50 000?
+-- (include 30 and 50 in the results)
+select * 
+from public.customers
+where (age) between 30 and 50
+and income < 50000;
+
+-- What is the average income between the ages of 20 and 50? (Including 20 and 50)
+select avg(income) 
+from public.customers
+where (age) between 20 and 50
+-- RESULT: 59361.925908612832 
