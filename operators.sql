@@ -63,7 +63,7 @@ AND totalamount > 100
 
 -- RESULT : 205226.06
 
-
+-- BETWEEN 
 
 -- Who between the ages of 30 and 50 has an income less than 50 000?
 -- (include 30 and 50 in the results)
@@ -77,3 +77,82 @@ select avg(income)
 from public.customers
 where (age) between 20 and 50
 -- RESULT: 59361.925908612832 
+
+--- IN KEYWORD
+/*
+* DB: Store
+* Table: orders
+* Question: How many orders were made by customer 7888, 1082, 12808, 9623
+*/
+select *
+from public.orders
+where customerid in(7888, 1082, 12808, 9623)
+
+/*
+* DB: World
+* Table: city
+* Question: How many cities are in the district of Zuid-Holland, Noord-Brabant and Utrecht?
+*/
+SELECT COUNT(id)
+from public.city
+where district in ('Zuid-Holland','Noord-Brabant', 'Utrecht')
+
+-- LIKE AND ILIKE - Pattern matching 
+
+/*
+* DB: Employees
+* Table: employees
+* Question: Find the age of all employees who's name starts with M.
+* Sample output: https://imgur.com/vXs4093
+* Use EXTRACT (YEAR FROM AGE(birth_date)) we will learn about this in later parts of the course
+*/
+SELECT emp_no, first_name,
+EXTRACT (YEAR FROM AGE(birth_date)) as "age"
+FROM employees
+where first_name ILIKE 'M%'
+
+/*
+* DB: Employees
+* Table: employees
+* Question: How many people's name start with A and end with R?
+* Expected output: 1846
+*/
+select COUNT(emp_no)
+from public.employees
+where first_name ilike 'A%R'
+
+
+/*
+* DB: Store
+* Table: customers
+* Question: How many people's zipcode have a 2 in it?.
+* Expected output: 4211 
+*/
+
+SELECT COUNT(customerid)
+FROM public.customers
+WHERE zip::TEXT LIKE '%2%';
+
+
+/*
+* DB: Store
+* Table: customers
+* Question: How many people's zipcode start with 2 with the 3rd character being a 1.
+* Expected output: 109 
+*/
+SELECT COUNT(customerid)
+FROM public.customers
+WHERE zip::TEXT LIKE '2_1%';
+
+
+/*
+* DB: Store
+* Table: customers
+* Question: Which states have phone numbers starting with 302?
+* Replace null values with "No State"                                                  
+* Expected output: https://imgur.com/AVe6G4c
+*/
+
+SELECT COALESCE(state, 'No State') AS "State"
+FROM public.customers
+WHERE phone::text like '302%'
